@@ -78,4 +78,18 @@ if($uri_exploded[0] == "/weather"){
   }
  echo json_encode($msg);
 }
+
+/********** To handle World affairs **********************/
+else if($uri_exploded[0] == "/qa"){
+    $reply = "This is not handled";
+    $msg = array("answer" => $reply);
+    echo json_encode($msg);
+}
+/********* To handle all other case *********************/
+else{
+    $reply = "This is not handled";
+    $msg = array("answer" => $reply);
+    echo json_encode($msg);
+  
+}
 ?>
