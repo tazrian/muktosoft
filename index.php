@@ -28,7 +28,7 @@
     echo json_encode($msg);
   }
 /********** To handle weather ************/
-if($uri_exploded[0] == "/weather"){
+else if($uri_exploded[0] == "/weather"){
   $n_words = str_word_count($question[1],0);
   $question = explode(" ",$question[1]);
   $city = $question[$n_words-1];
@@ -39,44 +39,47 @@ if($uri_exploded[0] == "/weather"){
   $response = json_decode($response,true);
 
   $question = strtolower(implode($question));
-  if (strpos($question, 'temperature') !== false){
-    $msg = array("answer" => $response["main"]["temp"]);
-  }
-  else if (strpos($question, 'humidity') !== false){
-  $msg = array("answer" => $response["main"]["humidity"]);
-  }
-
-  else if(strpos($question, 'rain') !== false && $response["cod"] != 404){
-    if(strcasecmp($response["weather"][0]["main"], "rain") == 0){
-            $msg = array("answer" => "YES");
+  if( $response["cod"] != 404){
+      if (strpos($question, 'temperature') !== false){
+        $msg = array("answer" => $response["main"]["temp"]);
+      }
+      else if (strpos($question, 'humidity') !== false){
+        $msg = array("answer" => $response["main"]["humidity"]);
+      }
+      else if(strpos($question, 'rain') !== false){
+        if(strcasecmp($response["weather"][0]["main"], "rain") == 0){
+                $msg = array("answer" => "YES");
+                }
+          else{
+             $msg = array("answer" => "NO");
+           }
+      }
+      else if(strpos($question, 'clouds') !== false){
+        if(strcasecmp($response["weather"][0]["main"], "clouds") == 0){
+                $msg = array("answer" => "YES");
+           }
+          else{
+             $msg = array("answer" => "NO");
+           }
+      }
+      else if(strpos($question, 'clear') !== false){
+        if(strcasecmp($response["weather"][0]["main"], "clear") == 0){
+                $msg = array("answer" => "YES");
+                }
+          else{
+             $msg = array("answer" => "NO");
+            }
       }
       else{
-         $msg = array("answer" => "NO");
+        $msg = array("answer" => "Sorry,Kitty. I can't understand your question.");
       }
-  }
-  else if(strpos($question, 'clouds') !== false && $response["cod"] != 404){
-    if(strcasecmp($response["weather"][0]["main"], "clouds") == 0){
-            $msg = array("answer" => "YES");
-      }
-      else{
-         $msg = array("answer" => "NO");
-      }
-  }
-  else if(strpos($question, 'clear') !== false && $response["cod"] != 404){
-    if(strcasecmp($response["weather"][0]["main"], "clear") == 0){
-            $msg = array("answer" => "YES");
-      }
-      else{
-         $msg = array("answer" => "NO");
-      }
-  }
-  else if($response["cod"] == 404){     //if city name is incorrect
+     
+    }
+  else if($response["cod"] == 404){
     $msg = array("answer" => "Hi,Kitty! PLease clearly mention the name of the city.");
+    
   }
-  else{
-    $msg = array("answer" => "Sorry,Kitty. I can't understand your question.");
-  }
- echo json_encode($msg);
+  echo json_encode($msg);
 }
 
 /********** To handle World affairs **********************/
