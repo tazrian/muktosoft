@@ -41,7 +41,7 @@ else if($uri_exploded[0] == "/weather"){
   $question = strtolower(implode($question));
   if( $response["cod"] != 404){
       if (strpos($question, 'temperature') !== false){
-        $msg = array("answer" => $response["main"]["temp"]);
+        $msg = array("answer" => $response["main"]["temp"]." k");
       }
       else if (strpos($question, 'humidity') !== false){
         $msg = array("answer" => $response["main"]["humidity"]);
